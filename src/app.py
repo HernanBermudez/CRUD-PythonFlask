@@ -1,5 +1,5 @@
 from flask import Flask
-from flask import render_template, request
+from flask import render_template, request, redirect
 from flaskext import mysql
 from datetime import datetime as dt
 
@@ -18,13 +18,15 @@ def index():
     conn = mysql.connect()
     cursor = conn.cursor()
 
-    sql = "Insert into rankingteams (name, country, manager, logo) values ('Paris Saint Germain', 'Francia', 'Mauricio Pochettino', 'https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.futbox.com%2Fes%2Fparis-saint-germain%23!informacion&psig=AOvVaw3qF4aDvH_82duJZP9SR0eg&ust=1638500074923000&source=images&cd=vfe&ved=0CAsQjRxqFwoTCIC7zsuOxPQCFQAAAAAdAAAAABAK');"
+    sql = "SELECT * FROM rankingteams;"
     
     cursor.execute(sql)
+    equipos = cursor.fetchall()
+    print(equipos)
 
     conn.commit()
 
-    return render_template('equipos/index.html')
+    return render_template('equipos/index.html', equipos = equipos)
 
 
 @app.route('/create')
@@ -33,14 +35,22 @@ def create():
 
 @app.route('/store', methods=['POST'])
 def storage():
+
+    _name = request.form['txtName']
+    _country = request.form['txtCountry']
+    _manager = request.form['txtManager']
+    _logo = request.files['teamLogo']
+
+    sql = "INSERT INTO rankingteams (name, country, manager, logo) values (%s, %s, %s, %s)"
+
+    data = (_name, _country, _manager, _logo.filename)
+
     conn = mysql.connect()
     cursor = conn.cursor()
 
-    sql = "Insert into rankingteams (name, country, manager, logo) values ('Bayern Munich', 'Alemania', 'Mauricio Pochettino', 'https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.futbox.com%2Fes%2Fparis-saint-germain%23!informacion&psig=AOvVaw3qF4aDvH_82duJZP9SR0eg&ust=1638500074923000&source=images&cd=vfe&ved=0CAsQjRxqFwoTCIC7zsuOxPQCFQAAAAAdAAAAABAK');"
-    
-    cursor.execute(sql)
+    cursor.execute(sql, data)
     conn.commit()
-    return render_template('equipos/index.html')
+    return redirect('/')
 
 if __name__ == '__main__':
     app.run(debug=True)

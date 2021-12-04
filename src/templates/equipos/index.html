@@ -10,8 +10,31 @@
     <title>Club Ranking</title>
 </head>
 <body>
-    <h1>Has añadido al primer equipo a la base de datos</h1>
+    <h1>Has añadido un equipo a la base de datos</h1>
     <h3>Que grande que sos Combazo</h3>
+
+    <table>
+        <thead>
+             <tr>
+                 <th>#</th>
+                 <th>Name</th>
+                 <th>Country</th>
+                 <th>Manager</th>
+                 <th>Logo</th>
+             </tr>
+        </thead>
+        <tbody>
+            {% for equipo in equipos %}
+            <tr>
+                <td>{{equipo[0]}}</td>
+                <td>{{equipo[1]}}</td>
+                <td>{{equipo[2]}}</td>
+                <td>{{equipo[3]}}</td>
+                <td>{{equipo[4]}}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
     <!-- Vue3 -->
     <script src="https://unpkg.com/vue@next"></script>
 </body>
