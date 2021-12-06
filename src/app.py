@@ -1,7 +1,7 @@
 from flask import Flask
 from flask import render_template, request, redirect
 from flaskext import mysql
-from datetime import datetime as dt
+from datetime import datetime 
 
 app = Flask(__name__)
 mysql = mysql.MySQL()
@@ -41,6 +41,15 @@ def storage():
     _manager = request.form['txtManager']
     _logo = request.files['teamLogo']
 
+    now = datetime.now()
+    print(now)
+    tiempo = now.strftime("%Y%H%M%S")
+    print(tiempo)
+
+    if _logo.filename != '':
+        newNameLogo =  tiempo + '_' + _logo.filename
+        _logo.save("uploads/" + newNameLogo)
+
     sql = "INSERT INTO rankingteams (name, country, manager, logo) values (%s, %s, %s, %s)"
 
     data = (_name, _country, _manager, _logo.filename)
@@ -51,6 +60,6 @@ def storage():
     cursor.execute(sql, data)
     conn.commit()
     return redirect('/')
-
+    
 if __name__ == '__main__':
     app.run(debug=True)
