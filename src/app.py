@@ -67,10 +67,19 @@ def storage():
 
 @app.route('/delete/<int:id>')
 def delete(id):
-    sql = "DELETE FROM rankingteams WHERE id=%s"
     conn = mysql.connect()
     cursor = conn.cursor()
-    cursor.execute(sql, id)
+    sql = f'DELETE logo FROM rankingteams logo WHERE id="{id}"'
+    cursor.execute(sql)
+    nameLogo = cursor.fetchone()
+    try:
+        os.remove(os.path.join(app.config['UPLOADS'], nameLogo))
+    except:
+        pass
+
+    sql = f'DELETE FROM rankingteams WHERE id="{id}"'
+ 
+    cursor.execute(sql)
     conn.commit()
 
     return redirect('/')
@@ -106,7 +115,7 @@ def update():
         newNameLogo =  tiempo + '_' + _logo.filename
         _logo.save("src/uploads/" + newNameLogo)
 
-        sql = "SELECT logo FROM rankingteams WHERE id=%s"
+        sql = f'SELECT logo FROM rankingteams WHERE id="{id}"'
         cursor.execute(sql)
 
         nameLogo = cursor.fetchone()[0]
@@ -117,9 +126,11 @@ def update():
         conn = mysql.connect()
         cursor = conn.cursor()
 
-    sql = "UPDATE rankingteams SET name = {_name}, country = {_country}, manager = {_manager} WHERE id = %s"
+    sql = f'UPDATE rankingteams SET name = "{_name}", country = "{_country}", manager = "{_manager}" WHERE id = "{id}"'
     cursor.execute(sql)
     conn.commit()
+
+    return redirect('/')
 
 if __name__ == '__main__':
     app.run(debug=True)
