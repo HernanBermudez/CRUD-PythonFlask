@@ -1,47 +1,36 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    
-    <title>Club Ranking</title>
-</head>
-<body>
-    <h1>Has añadido un equipo a la base de datos</h1>
-    <h3>Que grande que sos Combazo</h3>
 
-    <table>
-        <thead>
-             <tr>
-                 <th>#</th>
-                 <th>Name</th>
-                 <th>Country</th>
-                 <th>Manager</th>
-                 <th>Logo</th>
-             </tr>
-        </thead>
-        <tbody>
-            {% for equipo in equipos %}
+{% include 'header.html' %}
+<h1>Has añadido un equipo a la base de datos</h1>
+<h3>Que grande que sos Combazo</h3>
+
+<table>
+    <thead>
             <tr>
-                <td>{{equipo[0]}}</td>
-                <td>{{equipo[1]}}</td>
-                <td>{{equipo[2]}}</td>
-                <td>{{equipo[3]}}</td>
-                <td>{{equipo[4]}}</td>
-                <td>
-                    <a href="/modify/{{ equipo[0] }}">Edit</a>
-                    |
-                    <a href="/delete/{{ equipo[0] }}">Delete</a>
-                    
-                </td>
+                <th>#</th>
+                <th>Name</th>
+                <th>Country</th>
+                <th>Manager</th>
+                <th>Logo</th>
             </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-    <!-- Vue3 -->
-    <script src="https://unpkg.com/vue@next"></script>
-</body>
-</html>
+    </thead>
+    <tbody>
+        {% for equipo in equipos %}
+        <tr>
+            <td>{{equipo[0]}}</td>
+            <td>{{equipo[1]}}</td>
+            <td>{{equipo[2]}}</td>
+            <td>{{equipo[3]}}</td>
+            <td>{{equipo[4]}}</td>
+            <td>
+                <a href="/modify/{{ equipo[0] }}">Edit</a>
+                |
+                <a href="/delete/{{ equipo[0] }}">Delete</a>
+                
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<!-- Vue3 -->
+<script src="https://unpkg.com/vue@next"></script>
+{%include 'footer.html'%}
