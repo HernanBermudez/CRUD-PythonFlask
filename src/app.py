@@ -60,6 +60,6 @@ def storage():
     cursor.execute(sql, data)
     conn.commit()
     return redirect('/')
-
+    
 if __name__ == '__main__':
     app.run(debug=True)
