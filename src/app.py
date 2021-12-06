@@ -12,7 +12,7 @@ app.config['MYSQL_DATABASE_USER'] = 'uo4gy1b7480dgnb4'
 app.config['MYSQL_DATABASE_PASSWORD'] = 'UXmaMucXeSvvoQXxvcTJ'
 app.config['MYSQL_DATABASE_DB'] = 'b6phvfwbvhi1c3mha7h9'
 
-UPLOADS = os.path.join('uploads')
+UPLOADS = os.path.join('src/uploads')
 app.config['UPLOADS'] = UPLOADS # Guardo ruta como un valor en la app
 
 mysql.init_app(app)
