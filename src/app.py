@@ -52,7 +52,7 @@ def storage():
 
     if _logo.filename != '':
         newNameLogo =  tiempo + '_' + _logo.filename
-        _logo.save("uploads/" + newNameLogo)
+        _logo.save("src/uploads/" + newNameLogo)
 
     sql = "INSERT INTO rankingteams (name, country, manager, logo) values (%s, %s, %s, %s)"
 
@@ -95,7 +95,7 @@ def update():
     _manager = request.form['txtManager']
     _logo = request.files['teamLogo']
 
-    data = (id, _name, _country, _manager)
+    # data = (id, _name, _country, _manager)
 
     conn = mysql.connect()
     cursor = conn.cursor()
@@ -104,17 +104,20 @@ def update():
         now = datetime.now()
         tiempo = now.strftime("%Y%H%M%S")
         newNameLogo =  tiempo + '_' + _logo.filename
-        _logo.save("uploads/" + newNameLogo)
+        _logo.save("src/uploads/" + newNameLogo)
 
-    sql = "SELECT logo FROM rankingteams WHERE id=%s"
-    cursor.execute(sql)
+        sql = "SELECT logo FROM rankingteams WHERE id=%s"
+        cursor.execute(sql)
 
-    nameLogo = cursor.fetchone()[0]
+        nameLogo = cursor.fetchone()[0]
+        deleteLogo = os.path.join(app.config['UPLOADS'], nameLogo)
 
-    os.remove(os.path.join(app.config['UPLOADS'], nameLogo))
+        os.remove(os.path.join(app.config['UPLOADS'], nameLogo))
+
+        conn = mysql.connect()
+        cursor = conn.cursor()
 
     sql = "UPDATE rankingteams SET name = {_name}, country = {_country}, manager = {_manager} WHERE id = %s"
-
     cursor.execute(sql)
     conn.commit()
 
