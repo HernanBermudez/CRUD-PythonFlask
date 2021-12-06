@@ -60,6 +60,16 @@ def storage():
     cursor.execute(sql, data)
     conn.commit()
     return redirect('/')
-    
+
+@app.route('/delete/<int:id>')
+def delete(id):
+    sql = "DELETE FROM rankingteams WHERE id=%s"
+    conn = mysql.connect()
+    cursor = conn.cursor()
+    cursor.execute(sql, id)
+    conn.commit()
+
+    return redirect('/')
+
 if __name__ == '__main__':
     app.run(debug=True)

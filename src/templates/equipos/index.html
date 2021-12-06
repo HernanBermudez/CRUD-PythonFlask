@@ -31,6 +31,12 @@
                 <td>{{equipo[2]}}</td>
                 <td>{{equipo[3]}}</td>
                 <td>{{equipo[4]}}</td>
+                <td>
+                    <a href="/modify/{{ equipo[0] }}">Edit</a>
+                    |
+                    <a href="/delete/{{ equipo[0] }}">Delete</a>
+                    
+                </td>
             </tr>
             {% endfor %}
         </tbody>
