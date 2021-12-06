@@ -4,9 +4,34 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Edit</title>
 </head>
 <body>
+
+    <form action="/update" method="post" enctype="multipart/form-data">
+        <br>
+        <br>
+        <center>Insert the team info</center>
+        <br>
+        <br>
+        <center><input hidden type="text" name="txtId" id="txtId" value="{{ equipo[0] }}"></center>
+        <br>
+        <br>
+        <center>Name {{ txtName }} &nbsp;&nbsp;<input type="text" name="txtName" v-bind:id="txtName" value="{{ equipo[1] }}"></center>
+        <br>
+        <br>
+        <center>Country &nbsp;&nbsp;<input type="text" name="txtCountry" id="txtCountry" value="{{ equipo[2] }}"></center>
+        <br>
+        <br>
+        <center>Manager &nbsp;&nbsp;<input type="text" name="txtManager" id="txtManager" value="{{ equipo[3] }}"></center>
+        <br>
+        <br>
+        <center>Logo: {{ equipo[4] }}</center>
+        <center>Select the logo &nbsp;&nbsp;<input type="file" name="teamLogo" id="teamLogo" value="{{ equipo[4] }}"></center>
+        <br>
+        <br>
+        <center><input type="submit" value="Modify Team"></center>
+    </form>
     
 </body>
 </html>
