@@ -71,5 +71,16 @@ def delete(id):
 
     return redirect('/')
 
+@app.route('/modify/<int:id>')
+def modify(id):
+    sql = "SELECT * FROM rankingteams WHERE id = %s"
+    conn = mysql.connect()
+    cursor = conn.cursor()
+    cursor.execute(sql, id)
+    equipo = cursor.fetchone()
+    conn.commit()
+
+    return render_template('equipos/edit.html', equipo = equipo)
+
 if __name__ == '__main__':
     app.run(debug=True)
