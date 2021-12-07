@@ -4,6 +4,8 @@ from flaskext import mysql
 from datetime import datetime 
 import os
 
+from pymysql import STRING
+
 app = Flask(__name__)
 mysql = mysql.MySQL()
 
@@ -56,14 +58,14 @@ def storage():
 
     sql = "INSERT INTO rankingteams (name, country, manager, logo) values (%s, %s, %s, %s)"
 
-    data = (_name, _country, _manager, _logo.filename)
+    data = (_name, _country, _manager, newNameLogo)
 
     conn = mysql.connect()
     cursor = conn.cursor()
 
     cursor.execute(sql, data)
     conn.commit()
-    return redirect('/')
+    return redirect('/create')
 
 @app.route('/delete/<int:id>')
 def delete(id):
@@ -73,7 +75,7 @@ def delete(id):
     cursor.execute(sql)
     nameLogo = cursor.fetchone()
     try:
-        os.remove(os.path.join(app.config['UPLOADS'], nameLogo))
+        os.remove(nameLogo)
     except:
         pass
 
@@ -115,16 +117,17 @@ def update():
         newNameLogo =  tiempo + '_' + _logo.filename
         _logo.save("src/uploads/" + newNameLogo)
 
-        sql = f'SELECT logo FROM rankingteams WHERE id="{id}"'
+        sql = f'SELECT logo FROM rankingteams logo WHERE id="{id}"'
         cursor.execute(sql)
+        conn.commit()
 
         nameLogo = cursor.fetchone()[0]
-        deleteLogo = os.path.join(app.config['UPLOADS'], nameLogo)
+        os.path.join(app.config['UPLOADS'], nameLogo)  
 
-        os.remove(os.path.join(app.config['UPLOADS'], nameLogo))
-
-        conn = mysql.connect()
-        cursor = conn.cursor()
+        os.remove(os.path.join(app.config['UPLOADS'], newNameLogo))
+        sql = f'UPDATE rankingteams SET logo = "{newNameLogo}" WHERE id="{id}";'
+        cursor.execute(sql)
+        conn.commit()
 
     sql = f'UPDATE rankingteams SET name = "{_name}", country = "{_country}", manager = "{_manager}" WHERE id = "{id}"'
     cursor.execute(sql)
