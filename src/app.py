@@ -31,7 +31,6 @@ def index():
     print(equipos)
 
     conn.commit()
-
     return render_template('equipos/index.html', equipos = equipos)
 
 
@@ -71,13 +70,17 @@ def storage():
 def delete(id):
     conn = mysql.connect()
     cursor = conn.cursor()
-    sql = f'DELETE logo FROM rankingteams logo WHERE id="{id}"'
+    sql = f'SELECT logo FROM rankingteams logo WHERE id="{id}"'
     cursor.execute(sql)
-    nameLogo = cursor.fetchone()
+    conn.commit()
+    nameLogo = cursor.fetchone()[0]
     try:
-        os.remove(nameLogo)
+        sql = f'DELETE logo FROM rankingteams logo WHERE id="{id}"'
+        cursor.execute(sql)
+        conn.commit()
+        os.remove(os.path.join(app.config['UPLOADS'], nameLogo))
     except:
-        pass
+        print("No borró el logo")
 
     sql = f'DELETE FROM rankingteams WHERE id="{id}"'
  
@@ -124,10 +127,13 @@ def update():
         nameLogo = cursor.fetchone()[0]
         os.path.join(app.config['UPLOADS'], nameLogo)  
 
-        os.remove(os.path.join(app.config['UPLOADS'], newNameLogo))
-        sql = f'UPDATE rankingteams SET logo = "{newNameLogo}" WHERE id="{id}";'
-        cursor.execute(sql)
-        conn.commit()
+        try:
+            os.remove(os.path.join(app.config['UPLOADS'], nameLogo))
+            sql = f'UPDATE rankingteams SET logo = "{newNameLogo}" WHERE id="{id}";'
+            cursor.execute(sql)
+            conn.commit()
+        except:
+            print("No borró el logo anterior")
 
     sql = f'UPDATE rankingteams SET name = "{_name}", country = "{_country}", manager = "{_manager}" WHERE id = "{id}"'
     cursor.execute(sql)
