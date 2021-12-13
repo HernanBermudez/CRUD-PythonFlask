@@ -1,5 +1,5 @@
 # Proyecto-Equipos-Flask
-Este proyecto consiste en una REST API usando Flask para consultar los diferentes equipos de fútbol según su ranking FIFA.
+Este proyecto consiste en una REST API usando Flask para la realización de un CRUD de una base de datos externa usando MySQL para visualizar los diferentes equipos de fútbol que el usuario desee tener para visualizar.
 
 ## Requerimientos
 
