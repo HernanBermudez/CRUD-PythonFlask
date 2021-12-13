@@ -1,30 +1,61 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <form action="/store" method="post" enctype="multipart/form-data">
-        Nombre:
-        <input type="text" name="txtNombre" id="txtNombre">
+{% include 'header.html' %}
+
+<form action="/store" method="post" enctype="multipart/form-data">
+    <div class="card">
+        <div class="card-header">Add Team</div>
+    </div>
+    <div class="card-body">
+        <p class="card-text">
+            <center><input hidden type="text" name="txtId" id="txtId""></center>
+            <div class="form-group">
+                <label for="txtName"></label>
+                <center>Name&nbsp;&nbsp;<input type="text" name="txtName" id="txtName"></center>
+            </div>
+            <div class="form-group">
+                <label for="txtCountry"></label>
+                <center>Country &nbsp;&nbsp;<input type="text" name="txtCountry" id="txtCountry""></center>
+            </div>
+            <div class="form-group">
+                <label for="txtManager"></label>
+                <center>Manager &nbsp;&nbsp;<input type="text" name="txtManager" id="txtManager""></center>
+            </div>
+            <div class="form-group">
+                <label for="teamLogo"></label>
+                <center>
+                    &nbsp;&nbsp;<input type="file" name="teamLogo" id="teamLogo">
+                </center>
+            </div>
+        </p>
+    </div>
+    <div class="form-group">
+        <label for="my-button"></label>
+        <center><input class="btn btn-success" type="submit" value="Add Team">
+        <a class="btn btn-primary" href="{{ url_for('index') }}">Home</a>
+        </center>
+    </div>
+</form>
+
+    <!-- <form action="/store" method="post" enctype="multipart/form-data">
         <br>
         <br>
-        País:
-        <input type="text" name="txtPais" id="txtPais">
+        <center>Insert the team info</center>
         <br>
         <br>
-        Técnico:
-        <input type="text" name="txtTecnico" id="txtTecnico">
+        <center>Name {{ txtName }} &nbsp;&nbsp;<input type="text" name="txtName" v-bind:id="txtName"></center>
         <br>
         <br>
-        Escudo:
-        <input type="file" name="Escudo" id="Escudo">
+        <center>Country &nbsp;&nbsp;<input type="text" name="txtCountry" id="txtCountry"></center>
         <br>
         <br>
-        <button>Enviar</button>
-    </form>
-</body>
-</html>
+        <center>Manager &nbsp;&nbsp;<input type="text" name="txtManager" id="txtManager"></center>
+        <br>
+        <br>
+        <center>Select the logo &nbsp;&nbsp;<input type="file" name="teamLogo" id="teamLogo"></center>
+        <br>
+        <br>
+        <center><input type="submit" value="Add Team"></center>
+    </form> -->
+    <!-- Vue3 -->
+    <script src="https://unpkg.com/vue@next"></script>
+
+{%include 'footer.html'%}
