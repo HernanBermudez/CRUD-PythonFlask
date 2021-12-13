@@ -1,16 +1,15 @@
 
 {% include 'header.html' %}
-<h1>Has añadido un equipo a la base de datos</h1>
-<h3>Que grande que sos Combazo</h3>
 
-<table>
-    <thead>
+<table class="table table-dark">
+    <thead class="thead-dark">
             <tr>
                 <th>#</th>
                 <th>Name</th>
                 <th>Country</th>
                 <th>Manager</th>
                 <th>Logo</th>
+                <th>Actions</th>
             </tr>
     </thead>
     <tbody>
@@ -20,12 +19,13 @@
             <td>{{equipo[1]}}</td>
             <td>{{equipo[2]}}</td>
             <td>{{equipo[3]}}</td>
-            <td>{{equipo[4]}}</td>
+            <td> 
+                <img src="logoteam/{{equipo[4]}}" width="100" alt="Logo del equipo">
+            </td>
             <td>
-                <a href="/modify/{{ equipo[0] }}">Edit</a>
+                <a class="btn btn-warning" href="/modify/{{ equipo[0] }}">Edit</a>
                 |
-                <a href="/delete/{{ equipo[0] }}">Delete</a>
-                
+                <a class="btn btn-danger" href="/delete/{{ equipo[0] }}">Delete</a> 
             </td>
         </tr>
         {% endfor %}

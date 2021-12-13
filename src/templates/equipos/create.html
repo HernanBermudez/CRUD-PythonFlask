@@ -1,16 +1,41 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <title>Create</title>
-</head>
+{% include 'header.html' %}
 
-<body>
-    <form action="/store" method="post" enctype="multipart/form-data">
+<form action="/store" method="post" enctype="multipart/form-data">
+    <div class="card">
+        <div class="card-header">Add Team</div>
+    </div>
+    <div class="card-body">
+        <p class="card-text">
+            <center><input hidden type="text" name="txtId" id="txtId""></center>
+            <div class="form-group">
+                <label for="txtName"></label>
+                <center>Name&nbsp;&nbsp;<input type="text" name="txtName" id="txtName"></center>
+            </div>
+            <div class="form-group">
+                <label for="txtCountry"></label>
+                <center>Country &nbsp;&nbsp;<input type="text" name="txtCountry" id="txtCountry""></center>
+            </div>
+            <div class="form-group">
+                <label for="txtManager"></label>
+                <center>Manager &nbsp;&nbsp;<input type="text" name="txtManager" id="txtManager""></center>
+            </div>
+            <div class="form-group">
+                <label for="teamLogo"></label>
+                <center>
+                    &nbsp;&nbsp;<input type="file" name="teamLogo" id="teamLogo">
+                </center>
+            </div>
+        </p>
+    </div>
+    <div class="form-group">
+        <label for="my-button"></label>
+        <center><input class="btn btn-success" type="submit" value="Add Team">
+        <a class="btn btn-primary" href="{{ url_for('index') }}">Home</a>
+        </center>
+    </div>
+</form>
+
+    <!-- <form action="/store" method="post" enctype="multipart/form-data">
         <br>
         <br>
         <center>Insert the team info</center>
@@ -29,8 +54,8 @@
         <br>
         <br>
         <center><input type="submit" value="Add Team"></center>
-    </form>
+    </form> -->
     <!-- Vue3 -->
     <script src="https://unpkg.com/vue@next"></script>
-</body>
-</html>
+
+{%include 'footer.html'%}
