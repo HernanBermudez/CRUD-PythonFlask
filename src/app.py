@@ -1,5 +1,5 @@
 from flask import Flask
-from flask import render_template, request, redirect
+from flask import render_template, request, redirect, url_for, send_from_directory
 from flaskext import mysql
 from datetime import datetime 
 import os
@@ -18,6 +18,19 @@ UPLOADS = os.path.join('src/uploads')
 app.config['UPLOADS'] = UPLOADS # Guardo ruta como un valor en la app
 
 mysql.init_app(app)
+conn = mysql.connect()
+cursor = conn.cursor()
+
+def queryMySQL(query, data):
+    if len(data) > 0:
+        cursor.execute(query, data)
+    else:
+        cursor.execute(query)
+    conn.commit()
+
+@app.route('/logoteam/<path:nameLogo>')
+def showLogo(nameLogo):
+    return send_from_directory(os.path.join('uploads'), nameLogo)
 
 @app.route('/')
 def index():
@@ -59,11 +72,12 @@ def storage():
 
     data = (_name, _country, _manager, newNameLogo)
 
-    conn = mysql.connect()
-    cursor = conn.cursor()
+    queryMySQL(sql, data) # lo mismo pero con función
+    # conn = mysql.connect()
+    # cursor = conn.cursor()
 
-    cursor.execute(sql, data)
-    conn.commit()
+    # cursor.execute(sql, data)
+    # conn.commit()
     return redirect('/create')
 
 @app.route('/delete/<int:id>')
