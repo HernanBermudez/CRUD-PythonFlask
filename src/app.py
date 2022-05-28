@@ -66,7 +66,7 @@ def storage():
 
     if _logo.filename != '':
         newNameLogo =  tiempo + '_' + _logo.filename
-        _logo.save("src/uploads/" + newNameLogo)
+        # _logo.save("src/uploads/" + newNameLogo)
 
     sql = "INSERT INTO rankingteams (name, country, manager, logo) values (%s, %s, %s, %s)"
 
@@ -92,7 +92,7 @@ def delete(id):
         sql = f'DELETE logo FROM rankingteams logo WHERE id="{id}"'
         cursor.execute(sql)
         conn.commit()
-        os.remove(os.path.join(app.config['UPLOADS'], nameLogo))
+        # os.remove(os.path.join(app.config['UPLOADS'], nameLogo))
     except:
         print("No borró el logo")
 
@@ -132,7 +132,7 @@ def update():
         now = datetime.now()
         tiempo = now.strftime("%Y%H%M%S")
         newNameLogo =  tiempo + '_' + _logo.filename
-        _logo.save("src/uploads/" + newNameLogo)
+        # _logo.save("src/uploads/" + newNameLogo)
 
         sql = f'SELECT logo FROM rankingteams logo WHERE id="{id}"'
         cursor.execute(sql)
