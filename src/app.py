@@ -1,10 +1,8 @@
-from flask import Flask
-from flask import render_template, request, redirect, url_for, send_from_directory
-from flaskext import mysql
-from datetime import datetime 
 import os
-
-from pymysql import STRING
+from datetime import datetime
+from flask import Flask
+from flask import render_template, request, redirect, send_from_directory
+from flaskext import mysql
 
 app = Flask(__name__)
 mysql = mysql.MySQL()
@@ -21,31 +19,25 @@ mysql.init_app(app)
 conn = mysql.connect()
 cursor = conn.cursor()
 
-def queryMySQL(query, data):
+def query_mysql(query, data):
+    """Function for mysql queries"""
     if len(data) > 0:
         cursor.execute(query, data)
     else:
         cursor.execute(query)
     conn.commit()
 
-@app.route('/logoteam/<path:nameLogo>')
-def showLogo(nameLogo):
-    return send_from_directory(os.path.join('uploads'), nameLogo)
-
 @app.route('/')
 def index():
+    """Index template. Will show teams in database"""
     conn = mysql.connect()
     cursor = conn.cursor()
-
     sql = "SELECT * FROM rankingteams;"
-    
     cursor.execute(sql)
     equipos = cursor.fetchall()
     print(equipos)
-
     conn.commit()
     return render_template('equipos/index.html', equipos = equipos)
-
 
 @app.route('/create')
 def create():
@@ -53,106 +45,64 @@ def create():
 
 @app.route('/store', methods=['POST'])
 def storage():
-
+    """Stores new team in database"""
     _name = request.form['txtName']
     _country = request.form['txtCountry']
     _manager = request.form['txtManager']
-    _logo = request.files['teamLogo']
+    _logo = request.form['teamLogo']
 
     now = datetime.now()
     print(now)
     tiempo = now.strftime("%Y%H%M%S")
     print(tiempo)
 
-    if _logo.filename != '':
-        newNameLogo =  tiempo + '_' + _logo.filename
-        # _logo.save("src/uploads/" + newNameLogo)
-
-    sql = "INSERT INTO rankingteams (name, country, manager, logo) values (%s, %s, %s, %s)"
-
-    data = (_name, _country, _manager, newNameLogo)
-
-    queryMySQL(sql, data) # lo mismo pero con función
-    # conn = mysql.connect()
-    # cursor = conn.cursor()
-
-    # cursor.execute(sql, data)
-    # conn.commit()
+    sql = "INSERT INTO rankingteams (name, country, manager, logo_url) values (%s, %s, %s, %s)"
+    data = (_name, _country, _manager, _logo)
+    query_mysql(sql, data)
     return redirect('/create')
 
 @app.route('/delete/<int:id>')
 def delete(id):
-    conn = mysql.connect()
-    cursor = conn.cursor()
-    sql = f'SELECT logo FROM rankingteams logo WHERE id="{id}"'
-    cursor.execute(sql)
-    conn.commit()
-    nameLogo = cursor.fetchone()[0]
-    try:
-        sql = f'DELETE logo FROM rankingteams logo WHERE id="{id}"'
-        cursor.execute(sql)
-        conn.commit()
-        # os.remove(os.path.join(app.config['UPLOADS'], nameLogo))
-    except:
-        print("No borró el logo")
-
+    """Deletes team from database"""
     sql = f'DELETE FROM rankingteams WHERE id="{id}"'
- 
     cursor.execute(sql)
     conn.commit()
-
     return redirect('/')
 
 @app.route('/modify/<int:id>')
 def modify(id):
+    """Modifies teams in database"""
     sql = "SELECT * FROM rankingteams WHERE id = %s"
     conn = mysql.connect()
     cursor = conn.cursor()
     cursor.execute(sql, id)
     equipo = cursor.fetchone()
     conn.commit()
-
     return render_template('equipos/edit.html', equipo = equipo)
 
 @app.route('/update', methods=['POST'])
 def update():
-
-    id = request.form['txtId']
+    """Updates team from database"""
+    _id = request.form['txtId']
     _name = request.form['txtName']
     _country = request.form['txtCountry']
     _manager = request.form['txtManager']
-    _logo = request.files['teamLogo']
-
-    # data = (id, _name, _country, _manager)
+    _logo = request.form['teamLogo']
 
     conn = mysql.connect()
     cursor = conn.cursor()
 
-    if _logo.filename != '':
-        now = datetime.now()
-        tiempo = now.strftime("%Y%H%M%S")
-        newNameLogo =  tiempo + '_' + _logo.filename
-        # _logo.save("src/uploads/" + newNameLogo)
-
-        sql = f'SELECT logo FROM rankingteams logo WHERE id="{id}"'
-        cursor.execute(sql)
-        conn.commit()
-
-        nameLogo = cursor.fetchone()[0]
-        os.path.join(app.config['UPLOADS'], nameLogo)  
-
-        try:
-            os.remove(os.path.join(app.config['UPLOADS'], nameLogo))
-            sql = f'UPDATE rankingteams SET logo = "{newNameLogo}" WHERE id="{id}";'
-            cursor.execute(sql)
-            conn.commit()
-        except:
-            print("No borró el logo anterior")
-
-    sql = f'UPDATE rankingteams SET name = "{_name}", country = "{_country}", manager = "{_manager}" WHERE id = "{id}"'
+    sql = f'UPDATE rankingteams SET name = "{_name}", country = "{_country}", manager = "{_manager}", logo_url = "{_logo}" WHERE id = "{_id}"'
     cursor.execute(sql)
     conn.commit()
+    return redirect('/')
 
+@app.route('/reset-ids')
+def reset():
+    """Resets auto increment of IDs from database"""
+    data = []
+    sql = f"ALTER TABLE b6phvfwbvhi1c3mha7h9.rankingteams auto_increment = 0;"
+    query_mysql(sql, data)
     return redirect('/')
 
 if __name__ == '__main__':

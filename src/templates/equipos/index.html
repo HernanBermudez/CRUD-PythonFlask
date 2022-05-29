@@ -4,7 +4,7 @@
 <table class="table table-dark">
     <thead class="thead-dark">
             <tr>
-                <th>#</th>
+                <th>No.</th>
                 <th>Name</th>
                 <th>Country</th>
                 <th>Manager</th>
@@ -20,17 +20,16 @@
             <td>{{equipo[2]}}</td>
             <td>{{equipo[3]}}</td>
             <td> 
-                <img src="logoteam/{{equipo[4]}}" width="100" alt="Logo del equipo">
+                <img src="{{equipo[4]}}" alt="Logo del equipo">
             </td>
             <td>
                 <a class="btn btn-warning" href="/modify/{{ equipo[0] }}">Edit</a>
-                |
+                &nbsp;&nbsp;
                 <a class="btn btn-danger" href="/delete/{{ equipo[0] }}">Delete</a> 
             </td>
         </tr>
         {% endfor %}
     </tbody>
 </table>
-<!-- Vue3 -->
-<script src="https://unpkg.com/vue@next"></script>
+
 {%include 'footer.html'%}
